@@ -22,7 +22,7 @@ pub enum Direction {
 }
 
 const ROWS: usize = 10;
-const COLS: usize = 7;
+const COLS: usize = 10;
 
 #[derive(Clone,Copy)]
 pub struct Point {
