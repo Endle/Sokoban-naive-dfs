@@ -13,6 +13,14 @@ pub enum CellStatus {
     Wall,
 }
 
+#[derive(Copy, Clone)]
+pub enum Direction {
+    Up,
+    Down,
+    Left,
+    Right
+}
+
 const ROWS: usize = 10;
 const COLS: usize = 7;
 
@@ -208,28 +216,30 @@ fn try_push_box(g: &Graph, hum: Point, box_cur: Point, box_target: Point) -> Opt
 }
 
 pub fn try_extend_up(st: &GameStatus) -> Option<GameStatus> {
+    try_extend_by_direction(st, Direction::Up)
+}
+fn try_extend_by_direction(st: &GameStatus, d: Direction) -> Option<GameStatus> {
     let hum = st.hum;
-    if hum.r == 0 {
+
+    let next_step = step_by_direction(&hum, d);
+    if next_step.is_none() {
         return None;
     }
-
-    let mut box_p = hum.clone();
-    box_p.r -= 1;
-    let newg = match st.g.get(&box_p) {
+    let next_step = next_step.unwrap();
+    let newg = match st.g.get(&next_step) {
         CellStatus::Wall=> None,
         CellStatus::Human=> {
             panic!()
         },
         CellStatus::Empty=> {
-            try_walk(&st.g, hum, box_p)
+            try_walk(&st.g, hum, next_step)
         },
         CellStatus::Box => {
-            if box_p.r == 0 {
+            let box_t = step_by_direction(&next_step, d);
+            if box_t.is_none() {
                 return None;
             }
-            let mut box_t = box_p.clone();
-            box_t.r -= 1;
-            try_push_box(&st.g, hum, box_p, box_t)
+            try_push_box(&st.g, hum, next_step, box_t.unwrap())
         }
     };
 
@@ -242,13 +252,30 @@ pub fn try_extend_up(st: &GameStatus) -> Option<GameStatus> {
             let mut new_st = GameStatus{
                 g: v,
                 path: new_path,
-                hum: box_p,
+                hum: next_step,
             };
             return Option::Some(new_st)
         }
     }
 }
 
+fn step_by_direction(p: &Point, d: Direction) -> Option<Point> {
+    let mut r = p.clone();
+
+    match d {
+        Direction::Up => {
+            if p.r == 0 {
+                return None
+            }
+            r.r -= 1;
+            Option::Some(r)
+        }
+        _ => {
+            return None
+        }
+    }
+
+}
 
 
 pub fn try_extend_down(st: &GameStatus) -> Option<GameStatus> {
