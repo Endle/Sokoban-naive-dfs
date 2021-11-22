@@ -1,4 +1,4 @@
-use push_box::{get_input_map, build_game_status, GameStatus, print_answer, try_extend_up, try_extend_down, try_extend_left, try_extend_right};
+use push_box::{get_input_map, build_game_status, GameStatus, print_answer, try_extend_up, try_extend_down, try_extend_left, try_extend_right, print_map};
 use std::collections::VecDeque;
 use std::process::exit;
 
@@ -19,6 +19,7 @@ fn main() {
             Some(v) => st = v,
         }
 
+        print_map(&st.g);
         let r = try_extend(&mut bfs_queue, st);
         match r {
             None => (),

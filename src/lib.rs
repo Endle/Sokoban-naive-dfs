@@ -40,7 +40,7 @@ impl Graph {
 
 #[derive(Clone)]
 pub struct GameStatus {
-    g: Graph,
+    pub g: Graph,
     path: Vec<Graph>,
     hum: Point,
 }
@@ -160,8 +160,18 @@ fn try_push_box(g: &Graph, hum: Point, box_cur: Point, box_target: Point) -> Opt
     assert!(g.cells.get(hum.r,hum.c)== CellStatus::Human);
     assert!(g.get(&hum)== CellStatus::Human);
 
+    if g.get(&box_cur) != CellStatus::Box {
+        return None;
+    }
+    if g.get(&box_target) != CellStatus::Empty {
+        return None;
+    }
+    let mut newg = g.clone();
+    newg.cells.set(hum.r, hum.c, CellStatus::Empty);
+    newg.cells.set(box_cur.r, box_cur.c, CellStatus::Human);
+    newg.cells.set(box_target.r, box_target.c, CellStatus::Box);
 
-    None
+    Option::Some(newg)
 }
 
 pub fn try_extend_up(st: &GameStatus) -> Option<GameStatus> {
@@ -176,8 +186,19 @@ pub fn try_extend_up(st: &GameStatus) -> Option<GameStatus> {
     box_t.r -= 1;
 
     let newg = try_push_box(&st.g, hum, box_p, box_t);
-
-    return None;
+    match newg {
+        None => return None,
+        Some(v) => {
+            let mut new_path = st.path.clone();
+            new_path.push(v.clone());
+            let mut new_st = GameStatus{
+                g: v,
+                path: new_path,
+                hum: box_p,
+            };
+            return Option::Some(new_st)
+        }
+    }
 }
 
 
