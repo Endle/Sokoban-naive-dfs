@@ -1,4 +1,5 @@
-use push_box::{get_input_map, build_game_status, GameStatus, print_answer, try_extend_up, try_extend_down, try_extend_left, try_extend_right, print_map};
+use push_box::{get_input_map, build_game_status, GameStatus, print_answer,
+               print_map, Direction, try_extend_by_direction};
 use std::collections::VecDeque;
 use std::process::exit;
 
@@ -37,22 +38,22 @@ fn try_extend(queue: &mut VecDeque<GameStatus>, st: GameStatus) -> Option<GameSt
     if is_success_state(&st) {
         return Option::Some(st);
     }
-    let op = try_extend_up(&st);
+    let op = try_extend_by_direction(&st, Direction::Up);
     match op {
         None => (),
         Some(v) => queue.push_back(v),
     }
-    let op = try_extend_down(&st);
+    let op = try_extend_by_direction(&st, Direction::Down);
     match op {
         None => (),
         Some(v) => queue.push_back(v),
     }
-    let op = try_extend_left(&st);
+    let op = try_extend_by_direction(&st, Direction::Left);
     match op {
         None => (),
         Some(v) => queue.push_back(v),
     }
-    let op = try_extend_right(&st);
+    let op = try_extend_by_direction(&st, Direction::Right);
     match op {
         None => (),
         Some(v) => queue.push_back(v),

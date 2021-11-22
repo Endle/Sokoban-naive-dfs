@@ -215,10 +215,8 @@ fn try_push_box(g: &Graph, hum: Point, box_cur: Point, box_target: Point) -> Opt
     Option::Some(newg)
 }
 
-pub fn try_extend_up(st: &GameStatus) -> Option<GameStatus> {
-    try_extend_by_direction(st, Direction::Up)
-}
-fn try_extend_by_direction(st: &GameStatus, d: Direction) -> Option<GameStatus> {
+
+pub fn try_extend_by_direction(st: &GameStatus, d: Direction) -> Option<GameStatus> {
     let hum = st.hum;
 
     let next_step = step_by_direction(&hum, d);
@@ -278,15 +276,4 @@ fn step_by_direction(p: &Point, d: Direction) -> Option<Point> {
 }
 
 
-pub fn try_extend_down(st: &GameStatus) -> Option<GameStatus> {
-    return None;
-}
-
-pub fn try_extend_left(st: &GameStatus) -> Option<GameStatus> {
-    return None;
-}
-
-pub fn try_extend_right(st: &GameStatus) -> Option<GameStatus> {
-    return None;
-}
 
