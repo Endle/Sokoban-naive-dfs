@@ -219,7 +219,7 @@ fn try_push_box(g: &Graph, hum: Point, box_cur: Point, box_target: Point) -> Opt
 pub fn try_extend_by_direction(st: &GameStatus, d: Direction) -> Option<GameStatus> {
     let hum = st.hum;
 
-    let next_step = step_by_direction(&hum, d);
+    let next_step = step_by_direction(&st.g,&hum, d);
     if next_step.is_none() {
         return None;
     }
@@ -233,7 +233,7 @@ pub fn try_extend_by_direction(st: &GameStatus, d: Direction) -> Option<GameStat
             try_walk(&st.g, hum, next_step)
         },
         CellStatus::Box => {
-            let box_t = step_by_direction(&next_step, d);
+            let box_t = step_by_direction(&st.g, &next_step, d);
             if box_t.is_none() {
                 return None;
             }
@@ -257,7 +257,10 @@ pub fn try_extend_by_direction(st: &GameStatus, d: Direction) -> Option<GameStat
     }
 }
 
-fn step_by_direction(p: &Point, d: Direction) -> Option<Point> {
+
+
+// Hack: No need to check the range. We have walls
+fn step_by_direction(g: &Graph, p: &Point, d: Direction) -> Option<Point> {
     let mut r = p.clone();
 
     match d {
@@ -267,10 +270,19 @@ fn step_by_direction(p: &Point, d: Direction) -> Option<Point> {
             }
             r.r -= 1;
             Option::Some(r)
-        }
-        _ => {
-            return None
-        }
+        },
+        Direction::Down => {
+            r.r += 1;
+            Option::Some(r)
+        },
+        Direction::Left => {
+            r.c -= 1;
+            Option::Some(r)
+        },
+        Direction::Right => {
+            r.c += 1;
+            Option::Some(r)
+        },
     }
 
 }
