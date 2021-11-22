@@ -124,5 +124,6 @@ pub fn print_map(g: &Graph) {
     }
 }
 pub fn print_answer(s: GameStatus) {
+    println!("Success!\n");
     return;
 }

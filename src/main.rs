@@ -32,6 +32,50 @@ fn main() {
 
 
 
-fn try_extend(q: &mut VecDeque<GameStatus>, st: GameStatus) -> Option<GameStatus>{
+fn try_extend(queue: &mut VecDeque<GameStatus>, st: GameStatus) -> Option<GameStatus>{
+    if is_success_state(&st) {
+        return Option::Some(st);
+    }
+    let op = try_extend_up(&st);
+    match op {
+        None => (),
+        Some(v) => queue.push_back(v),
+    }
+    let op = try_extend_down(&st);
+    match op {
+        None => (),
+        Some(v) => queue.push_back(v),
+    }
+    let op = try_extend_left(&st);
+    match op {
+        None => (),
+        Some(v) => queue.push_back(v),
+    }
+    let op = try_extend_right(&st);
+    match op {
+        None => (),
+        Some(v) => queue.push_back(v),
+    }
     return None;
 }
+
+fn is_success_state(st: &GameStatus) -> bool {
+    false
+}
+
+fn try_extend_up(st: &GameStatus) -> Option<GameStatus> {
+    return None;
+}
+
+fn try_extend_down(st: &GameStatus) -> Option<GameStatus> {
+    return None;
+}
+
+fn try_extend_left(st: &GameStatus) -> Option<GameStatus> {
+    return None;
+}
+
+fn try_extend_right(st: &GameStatus) -> Option<GameStatus> {
+    return None;
+}
+
