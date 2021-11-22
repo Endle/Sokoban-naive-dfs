@@ -5,6 +5,7 @@ use std::io::{BufReader, BufRead};
 mod nd;
 
 #[derive(Copy, Clone)]
+#[derive(PartialEq, Eq)]
 enum CellStatus {
     Empty,
     Human,
@@ -15,6 +16,13 @@ enum CellStatus {
 const ROWS: usize = 10;
 const COLS: usize = 7;
 
+#[derive(Clone,Copy)]
+pub struct Point {
+    r:usize,
+    c:usize,
+}
+
+
 #[derive(Clone)]
 pub struct Graph {
     rows:usize,
@@ -23,18 +31,30 @@ pub struct Graph {
     is_target: Arr<bool>,
 }
 
-
+#[derive(Clone)]
 pub struct GameStatus {
     g: Graph,
-    path: Vec<Graph>
+    path: Vec<Graph>,
+    hum: Point,
 }
 
 pub fn build_game_status(g:Graph) -> GameStatus {
     let mut path = Vec::new();
     path.push(g.clone());
+    let mut hr = 0;
+    let mut hc = 0;
+    for i in 0..g.rows {
+        for j in 0..g.cols {
+            if g.cells.get(i,j) == CellStatus::Human {
+                hr = i;
+                hc = j;
+            }
+        }
+    }
     let mut st = GameStatus{
         g,
-        path
+        path,
+        hum: Point{r: hr, c: hc}
     };
     return st;
 }
