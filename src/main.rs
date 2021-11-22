@@ -2,6 +2,7 @@ use push_box::{get_input_map, build_game_status, GameStatus, print_answer,
                print_map, Direction, try_extend_by_direction};
 use std::collections::{VecDeque, HashSet};
 use std::process::exit;
+use bit_vec::BitVec;
 
 
 fn main() {
@@ -25,7 +26,7 @@ fn main() {
         }
 
         // print_map(&st.g);
-        let r = try_extend(&mut bfs_queue, st);
+        let r = try_extend(&mut appeared_graph, &mut bfs_queue, st);
         match r {
             None => (),
             Some(v) => {
@@ -38,30 +39,41 @@ fn main() {
 
 
 
-fn try_extend(queue: &mut VecDeque<GameStatus>, st: GameStatus) -> Option<GameStatus>{
+fn try_extend(appeared: &mut HashSet<BitVec>, queue: &mut VecDeque<GameStatus>, st: GameStatus) -> Option<GameStatus>{
     if is_success_state(&st) {
         return Option::Some(st);
     }
-    let op = try_extend_by_direction(&st, Direction::Up);
-    match op {
-        None => (),
-        Some(v) => queue.push_back(v),
+    for d in [Direction::Up, Direction::Down, Direction::Left, Direction::Right] {
+        // println!("{:?}", d);
+        let op = try_extend_by_direction(appeared, &st, d);
+        match op {
+            None => (),
+            Some(v) => {
+                let id = v.g.to_id();
+                if appeared.contains(&id) {
+                    continue;
+                }
+                appeared.insert(id);
+                queue.push_back(v);
+            },
+        }
     }
-    let op = try_extend_by_direction(&st, Direction::Down);
-    match op {
-        None => (),
-        Some(v) => queue.push_back(v),
-    }
-    let op = try_extend_by_direction(&st, Direction::Left);
-    match op {
-        None => (),
-        Some(v) => queue.push_back(v),
-    }
-    let op = try_extend_by_direction(&st, Direction::Right);
-    match op {
-        None => (),
-        Some(v) => queue.push_back(v),
-    }
+
+    // let op = try_extend_by_direction(appeared, &st, Direction::Down);
+    // match op {
+    //     None => (),
+    //     Some(v) => queue.push_back(v),
+    // }
+    // let op = try_extend_by_direction(appeared, &st, Direction::Left);
+    // match op {
+    //     None => (),
+    //     Some(v) => queue.push_back(v),
+    // }
+    // let op = try_extend_by_direction(appeared, &st, Direction::Right);
+    // match op {
+    //     None => (),
+    //     Some(v) => queue.push_back(v),
+    // }
     return None;
 }
 

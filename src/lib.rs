@@ -13,7 +13,7 @@ pub enum CellStatus {
     Wall,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub enum Direction {
     Up,
     Down,
@@ -54,6 +54,7 @@ impl PartialEq for Graph {
 
 
 use bit_vec::BitVec;
+use std::collections::HashSet;
 
 impl Graph {
     pub fn to_id(&self) -> BitVec {
@@ -263,7 +264,7 @@ fn try_push_box(g: &Graph, hum: Point, box_cur: Point, box_target: Point) -> Opt
 }
 
 
-pub fn try_extend_by_direction(st: &GameStatus, d: Direction) -> Option<GameStatus> {
+pub fn try_extend_by_direction(appeared: &HashSet<BitVec>, st: &GameStatus, d: Direction) -> Option<GameStatus> {
     let hum = st.hum;
 
     let next_step = step_by_direction(&st.g,&hum, d);
@@ -292,7 +293,11 @@ pub fn try_extend_by_direction(st: &GameStatus, d: Direction) -> Option<GameStat
     match newg {
         None => return None,
         Some(v) => {
-            if st.path.contains(&v) {
+            // if st.path.contains(&v) {
+            //     return None;
+            // }
+            let id = v.to_id();
+            if appeared.contains(&id) {
                 return None;
             }
             let mut new_path = st.path.clone();
