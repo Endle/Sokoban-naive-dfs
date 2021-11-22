@@ -40,6 +40,20 @@ impl<T:Copy> Arr<T> {
     }
 }
 
+impl<T:Copy> Clone for Arr<T> {
+    fn clone(&self) -> Self {
+        let mut new_data = Vec::with_capacity(self._data.len());
+        for i in 0..self._data.len(){
+            new_data.push(self._data[i]);
+        }
+        Arr{
+            _max_n: self._max_n,
+            _max_m: self._max_m,
+            _data: new_data,
+        }
+    }
+}
+
 impl<T:std::fmt::Display+Copy> std::fmt::Debug for Arr<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "Dim={}, ({},{})\n", 2, self._max_n, self._max_m);

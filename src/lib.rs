@@ -14,6 +14,8 @@ enum CellStatus {
 
 const ROWS: usize = 10;
 const COLS: usize = 7;
+
+#[derive(Clone)]
 pub struct Graph {
     rows:usize,
     cols:usize,
@@ -21,12 +23,19 @@ pub struct Graph {
     is_target: Arr<bool>,
 }
 
-pub struct GameStatus {
 
+pub struct GameStatus {
+    g: Graph,
+    path: Vec<Graph>
 }
 
 pub fn build_game_status(g:Graph) -> GameStatus {
-    let mut st = GameStatus{};
+    let mut path = Vec::new();
+    path.push(g.clone());
+    let mut st = GameStatus{
+        g,
+        path
+    };
     return st;
 }
 
