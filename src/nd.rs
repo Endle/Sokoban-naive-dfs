@@ -34,10 +34,9 @@ impl<T:Copy> Arr<T> {
         let p = self._get_pos(n, m);
         self._data[p]
     }
-    pub fn set(&mut self, n:usize, m:usize, ans:T) -> T {
+    pub fn set(&mut self, n:usize, m:usize, ans:T) {
         let p = self._get_pos(n, m);
         self._data[p] = ans;
-        ans
     }
 }
 
