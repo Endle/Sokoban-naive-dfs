@@ -61,5 +61,5 @@ fn try_extend(queue: &mut VecDeque<GameStatus>, st: GameStatus) -> Option<GameSt
 }
 
 fn is_success_state(st: &GameStatus) -> bool {
-    false
+    return st.g.is_success();
 }

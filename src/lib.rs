@@ -35,6 +35,25 @@ impl Graph {
     pub fn get(&self, p:&Point) -> CellStatus{
         self.cells.get(p.r, p.c)
     }
+    pub fn is_success(&self) -> bool {
+        for i in 0..self.rows {
+            for j in 0..self.cols {
+                if !self.satisfied_cell(i, j) {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+    fn satisfied_cell(&self, r: usize, c: usize) -> bool {
+        if !self.is_target.get(r, c) {
+            return true;
+        }
+        match self.cells.get(r, c) {
+            CellStatus::Box => true,
+            _ => false
+        }
+    }
 }
 
 
