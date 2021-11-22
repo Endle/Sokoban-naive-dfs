@@ -5,8 +5,9 @@ use std::process::exit;
 
 
 fn main() {
-    println!("Hello, world!");
-    let ori_graph = get_input_map();
+
+    let ori_graph = get_input_map("game_map.txt");
+
     let ori_status = build_game_status(ori_graph);
     let mut bfs_queue = VecDeque::new();
 

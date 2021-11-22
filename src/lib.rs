@@ -93,8 +93,7 @@ pub fn build_game_status(g:Graph) -> GameStatus {
     return st;
 }
 
-pub fn get_input_map() -> Graph {
-    let input_file = "game_map.txt";
+pub fn get_input_map(input_file:&str) -> Graph {
 
     let f = File::open(input_file).expect("Unable to open file");
     let f = BufReader::new(f);
@@ -179,6 +178,11 @@ pub fn print_map(g: &Graph) {
 }
 pub fn print_answer(s: GameStatus) {
     println!("Success!\n");
+    for i in 0..s.path.len() {
+        println!("Step {}", &i);
+        print_map(&s.path[i]);
+        println!("\n");
+    }
     return;
 }
 
