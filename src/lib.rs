@@ -85,7 +85,7 @@ pub fn build_game_status(g:Graph) -> GameStatus {
             }
         }
     }
-    let mut st = GameStatus{
+    let st = GameStatus{
         g,
         path,
         hum: Point{r: hr, c: hc}
@@ -141,7 +141,7 @@ pub fn get_input_map() -> Graph {
     //     r += 1;
     // }
 
-    let mut g = Graph{
+    let g = Graph{
         rows: r,
         cols: COLS,
         cells,
@@ -247,7 +247,7 @@ pub fn try_extend_by_direction(st: &GameStatus, d: Direction) -> Option<GameStat
         Some(v) => {
             let mut new_path = st.path.clone();
             new_path.push(v.clone());
-            let mut new_st = GameStatus{
+            let new_st = GameStatus{
                 g: v,
                 path: new_path,
                 hum: next_step,
@@ -260,7 +260,7 @@ pub fn try_extend_by_direction(st: &GameStatus, d: Direction) -> Option<GameStat
 
 
 // Hack: No need to check the range. We have walls
-fn step_by_direction(g: &Graph, p: &Point, d: Direction) -> Option<Point> {
+fn step_by_direction(_g: &Graph, p: &Point, d: Direction) -> Option<Point> {
     let mut r = p.clone();
 
     match d {
