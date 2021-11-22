@@ -51,7 +51,38 @@ impl PartialEq for Graph {
         true
     }
 }
+
+
+use bit_vec::BitVec;
+
 impl Graph {
+    pub fn to_id(&self) -> BitVec {
+        let mut r = BitVec::with_capacity(2 * self.rows * self.cols);
+        for i in 0..self.rows {
+            for j in 0..self.cols {
+                match self.cells.get(i, j) {
+                    CellStatus::Empty => {
+                        r.push(false);
+                        r.push(false);
+                    },
+                    CellStatus::Human => {
+                        r.push(false);
+                        r.push(true);
+                    },
+                    CellStatus::Wall => {
+                        r.push(true);
+                        r.push(false);
+                    },
+                    CellStatus::Box => {
+                        r.push(true);
+                        r.push(true);
+                    },
+                };
+            }
+        }
+
+        r
+    }
     pub fn get(&self, p:&Point) -> CellStatus{
         self.cells.get(p.r, p.c)
     }
@@ -193,7 +224,7 @@ pub fn print_answer(s: GameStatus) {
     for i in 0..s.path.len() {
         println!("Step {}", &i);
         print_map(&s.path[i]);
-        println!("\n");
+        // println!("\n");
     }
     return;
 }

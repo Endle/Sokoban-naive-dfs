@@ -1,12 +1,15 @@
 use push_box::{get_input_map, build_game_status, GameStatus, print_answer,
                print_map, Direction, try_extend_by_direction};
-use std::collections::VecDeque;
+use std::collections::{VecDeque, HashSet};
 use std::process::exit;
 
 
 fn main() {
 
-    let ori_graph = get_input_map("game_map.txt");
+    let ori_graph = get_input_map("game_map_0.txt");
+
+    let mut appeared_graph = HashSet::new();
+    appeared_graph.insert(ori_graph.to_id());
 
     let ori_status = build_game_status(ori_graph);
     let mut bfs_queue = VecDeque::new();
