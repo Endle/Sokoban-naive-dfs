@@ -6,7 +6,7 @@ mod nd;
 
 #[derive(Copy, Clone)]
 #[derive(PartialEq, Eq)]
-enum CellStatus {
+pub enum CellStatus {
     Empty,
     Human,
     Box,
@@ -30,6 +30,13 @@ pub struct Graph {
     cells: Arr<CellStatus>,
     is_target: Arr<bool>,
 }
+
+impl Graph {
+    pub fn get(&self, p:&Point) -> CellStatus{
+        self.cells.get(p.r, p.c)
+    }
+}
+
 
 #[derive(Clone)]
 pub struct GameStatus {
@@ -147,3 +154,43 @@ pub fn print_answer(s: GameStatus) {
     println!("Success!\n");
     return;
 }
+
+
+fn try_push_box(g: &Graph, hum: Point, box_cur: Point, box_target: Point) -> Option<Graph>{
+    assert!(g.cells.get(hum.r,hum.c)== CellStatus::Human);
+    assert!(g.get(&hum)== CellStatus::Human);
+
+
+    None
+}
+
+pub fn try_extend_up(st: &GameStatus) -> Option<GameStatus> {
+    let hum = st.hum;
+    if hum.r < 2 {
+        return None;
+    }
+
+    let mut box_p = hum.clone();
+    box_p.r -= 1;
+    let mut box_t = box_p.clone();
+    box_t.r -= 1;
+
+    let newg = try_push_box(&st.g, hum, box_p, box_t);
+
+    return None;
+}
+
+
+
+pub fn try_extend_down(st: &GameStatus) -> Option<GameStatus> {
+    return None;
+}
+
+pub fn try_extend_left(st: &GameStatus) -> Option<GameStatus> {
+    return None;
+}
+
+pub fn try_extend_right(st: &GameStatus) -> Option<GameStatus> {
+    return None;
+}
+

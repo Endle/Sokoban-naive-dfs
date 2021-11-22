@@ -1,4 +1,4 @@
-use push_box::{get_input_map, build_game_status, GameStatus,print_answer};
+use push_box::{get_input_map, build_game_status, GameStatus, print_answer, try_extend_up, try_extend_down, try_extend_left, try_extend_right};
 use std::collections::VecDeque;
 use std::process::exit;
 
@@ -62,20 +62,3 @@ fn try_extend(queue: &mut VecDeque<GameStatus>, st: GameStatus) -> Option<GameSt
 fn is_success_state(st: &GameStatus) -> bool {
     false
 }
-
-fn try_extend_up(st: &GameStatus) -> Option<GameStatus> {
-    return None;
-}
-
-fn try_extend_down(st: &GameStatus) -> Option<GameStatus> {
-    return None;
-}
-
-fn try_extend_left(st: &GameStatus) -> Option<GameStatus> {
-    return None;
-}
-
-fn try_extend_right(st: &GameStatus) -> Option<GameStatus> {
-    return None;
-}
-
