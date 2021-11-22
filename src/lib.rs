@@ -174,6 +174,20 @@ pub fn print_answer(s: GameStatus) {
     return;
 }
 
+fn try_walk(g: &Graph, hum: Point, target: Point) -> Option<Graph> {
+    assert!(g.cells.get(hum.r,hum.c)== CellStatus::Human);
+    assert!(g.get(&hum)== CellStatus::Human);
+
+    if g.get(&target) != CellStatus::Empty {
+        return None;
+    }
+
+    let mut newg = g.clone();
+    newg.cells.set(hum.r, hum.c, CellStatus::Empty);
+    newg.cells.set(target.r, target.c, CellStatus::Human);
+    Option::Some(newg)
+}
+
 
 fn try_push_box(g: &Graph, hum: Point, box_cur: Point, box_target: Point) -> Option<Graph>{
     assert!(g.cells.get(hum.r,hum.c)== CellStatus::Human);
@@ -195,16 +209,31 @@ fn try_push_box(g: &Graph, hum: Point, box_cur: Point, box_target: Point) -> Opt
 
 pub fn try_extend_up(st: &GameStatus) -> Option<GameStatus> {
     let hum = st.hum;
-    if hum.r < 2 {
+    if hum.r == 0 {
         return None;
     }
 
     let mut box_p = hum.clone();
     box_p.r -= 1;
-    let mut box_t = box_p.clone();
-    box_t.r -= 1;
+    let newg = match st.g.get(&box_p) {
+        CellStatus::Wall=> None,
+        CellStatus::Human=> {
+            panic!()
+        },
+        CellStatus::Empty=> {
+            try_walk(&st.g, hum, box_p)
+        },
+        CellStatus::Box => {
+            if box_p.r == 0 {
+                return None;
+            }
+            let mut box_t = box_p.clone();
+            box_t.r -= 1;
+            try_push_box(&st.g, hum, box_p, box_t)
+        }
+    };
 
-    let newg = try_push_box(&st.g, hum, box_p, box_t);
+
     match newg {
         None => return None,
         Some(v) => {
