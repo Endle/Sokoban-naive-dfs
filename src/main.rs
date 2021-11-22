@@ -1,5 +1,6 @@
-use push_box::{get_input_map, build_game_status, GameStatus};
+use push_box::{get_input_map, build_game_status, GameStatus,print_answer};
 use std::collections::VecDeque;
+use std::process::exit;
 
 
 fn main() {
@@ -18,10 +19,19 @@ fn main() {
             Some(v) => st = v,
         }
 
-        try_extend(&mut bfs_queue, st);
+        let r = try_extend(&mut bfs_queue, st);
+        match r {
+            None => (),
+            Some(v) => {
+                print_answer(v);
+                exit(0);
+            },
+        }
     }
 }
 
-fn try_extend(q: &mut VecDeque<GameStatus>, st: GameStatus) {
-    todo!()
+
+
+fn try_extend(q: &mut VecDeque<GameStatus>, st: GameStatus) -> Option<GameStatus>{
+    return None;
 }
