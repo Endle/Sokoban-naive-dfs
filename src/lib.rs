@@ -203,7 +203,7 @@ pub fn print_map(g: &Graph) {
                 CellStatus::Human => print!("P"),
                 CellStatus::Empty => {
                     if g.is_target.get(r, c) {
-                        print!("T");
+                        print!("^");
                     } else {
                         print!("_");
                     }

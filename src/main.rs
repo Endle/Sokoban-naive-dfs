@@ -7,7 +7,7 @@ use bit_vec::BitVec;
 
 fn main() {
 
-    let ori_graph = get_input_map("game_map_0.txt");
+    let ori_graph = get_input_map("game_map.txt");
 
     let mut appeared_graph = HashSet::new();
     appeared_graph.insert(ori_graph.to_id());
