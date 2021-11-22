@@ -71,23 +71,49 @@ pub fn get_input_map() -> Graph {
         r += 1;
     }
 
-    while r < ROWS {
-        for c in 0..COLS {
-            cells.set(r, c, CellStatus::Wall);
-        }
-        r += 1;
-    }
+    // while r < ROWS {
+    //     for c in 0..COLS {
+    //         cells.set(r, c, CellStatus::Wall);
+    //     }
+    //     r += 1;
+    // }
 
     let mut g = Graph{
-        rows: ROWS,
+        rows: r,
         cols: COLS,
         cells,
         is_target : is_tg
     };
 
+    print_map(&g);
     return g;
 }
 
+pub fn print_map(g: &Graph) {
+    for r in 0..g.rows {
+        for c in 0..g.cols {
+            match g.cells.get(r, c) {
+                CellStatus::Wall => print!("W"),
+                CellStatus::Human => print!("P"),
+                CellStatus::Empty => {
+                    if g.is_target.get(r, c) {
+                        print!("T");
+                    } else {
+                        print!("_");
+                    }
+                },
+                CellStatus::Box => {
+                    if g.is_target.get(r, c) {
+                        print!("X");
+                    } else {
+                        print!("B");
+                    }
+                }
+            }
+        }
+        print!("\n");
+    }
+}
 pub fn print_answer(s: GameStatus) {
     return;
 }
