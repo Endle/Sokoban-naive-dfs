@@ -21,7 +21,7 @@ fn main() {
             Some(v) => st = v,
         }
 
-        print_map(&st.g);
+        // print_map(&st.g);
         let r = try_extend(&mut bfs_queue, st);
         match r {
             None => (),

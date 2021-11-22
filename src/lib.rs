@@ -39,6 +39,18 @@ pub struct Graph {
     is_target: Arr<bool>,
 }
 
+impl PartialEq for Graph {
+    fn eq(&self, other: &Graph) -> bool {
+        for i in 0..self.rows {
+            for j in 0..self.cols {
+                if self.cells.get(i,j) != other.cells.get(i,j) {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+}
 impl Graph {
     pub fn get(&self, p:&Point) -> CellStatus{
         self.cells.get(p.r, p.c)
@@ -249,6 +261,9 @@ pub fn try_extend_by_direction(st: &GameStatus, d: Direction) -> Option<GameStat
     match newg {
         None => return None,
         Some(v) => {
+            if st.path.contains(&v) {
+                return None;
+            }
             let mut new_path = st.path.clone();
             new_path.push(v.clone());
             let new_st = GameStatus{
